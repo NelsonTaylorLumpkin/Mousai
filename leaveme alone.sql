@@ -2,10 +2,10 @@
 VALUES ('XzkCESaoZcRHpgYzSgq2ZSQhRnO2', 'Nelson', 'ossocasa@gmail.com', 'Nellingsworth', 'nelson_profile.jpg', DEFAULT);
 
 INSERT INTO [User] ([FirebaseUserId], [Name], [Email], [PenName], [ProfileImage], [CreatedAt])
-VALUES ( 'aNjSMQqBRKbfQ0j5JuyyOVlCCUj1', 'Dr. Bobby Bigwaters', 'dr.bigwaters@yahooaiasks.com', 'BobAuthor', 'bob_profile.jpg', DEFAULT);
+VALUES ('aNjSMQqBRKbfQ0j5JuyyOVlCCUj1', 'Dr. Bobby Bigwaters', 'dr.bigwaters@yahooaiasks.com', 'BobAuthor', 'bob_profile.jpg', DEFAULT);
 
 INSERT INTO [User] ([FirebaseUserId], [Name], [Email], [PenName], [ProfileImage], [CreatedAt])
-VALUES ( 'firebaseuser3', 'Charlie', 'charlie@example.com', 'CharlieStoryteller', 'charlie_profile.jpg', DEFAULT);
+VALUES ('firebaseuser3', 'Charlie', 'charlie@example.com', 'CharlieStoryteller', 'charlie_profile.jpg', DEFAULT);
 
 -- Seed data for Follow table
 INSERT INTO [Follow] ([FollowingUserId], [FollowedUserId])

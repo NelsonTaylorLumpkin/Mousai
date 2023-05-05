@@ -1,14 +1,13 @@
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Login from "./Login";
-import Register from "./egister";
+import Register from "./Register";
 import Hello from "./Hello";
-import UserProfiles from "./UserProfiles";
+import UserProfiles from "./UserProfile";
 import UserProfileDetails from "./UserProfileDetails";
 import PostList from "./PostList";
-// import TagList from "./TagList";
-// import { AddTag } from "./AddTag";
-// import { TagEdit } from "./TagEdit";
+
+
 import PostForm from "./PostForm";
 
 export default function ApplicationViews({ isLoggedIn }) {
@@ -26,10 +25,9 @@ export default function ApplicationViews({ isLoggedIn }) {
                     <Route path="register" element={<Register />} />
                     <Route path="userprofile" element={<UserProfiles />} />
                     <Route path="userprofile/:id" element={<UserProfileDetails />} />
-                    {/* <Route path="tag" element={isLoggedIn ? <TagList /> : <Navigate to="/login" />} />
 
-                    <Route path="tag/:id" element={isLoggedIn ? <TagEdit /> : <Navigate to="/login" />} />
-                    <Route path="addtag" element={isLoggedIn ? <AddTag /> : <Navigate to="/login" />} /> */}
+
+
                     <Route path="*" element={<p>Whoops, nothing here...</p>} />
                 </Route>
             </Routes>

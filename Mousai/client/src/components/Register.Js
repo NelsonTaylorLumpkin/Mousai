@@ -6,11 +6,10 @@ import { register } from "../modules/authManager";
 export default function Register() {
     const navigate = useNavigate();
 
-    const [firstName, setFirstName] = useState();
-    const [lastName, setLastName] = useState();
-    const [displayName, setDisplayName] = useState();
+    const [name, setName] = useState();
+    const [penName, setPenName] = useState();
     const [email, setEmail] = useState();
-    const [imageLocation, setImageLocation] = useState();
+    const [profileImage, setProfileImage] = useState();
     const [password, setPassword] = useState();
     const [confirmPassword, setConfirmPassword] = useState();
 
@@ -19,14 +18,13 @@ export default function Register() {
         if (password && password !== confirmPassword) {
             alert("Passwords don't match. Do better.");
         } else {
-            const userProfile = {
-                firstName,
-                lastName,
-                displayName,
-                imageLocation,
+            const user = {
+                name,
+                penName,
+                profileImage,
                 email,
             };
-            register(userProfile, password).then(() => navigate("/"));
+            register(user, password).then(() => navigate("/"));
         }
     };
 
@@ -34,27 +32,27 @@ export default function Register() {
         <Form onSubmit={registerClick}>
             <fieldset>
                 <FormGroup>
-                    <Label htmlFor="firstName">First Name</Label>
+                    <Label htmlFor="name">Name</Label>
                     <Input
-                        id="firstName"
+                        id="name"
                         type="text"
-                        onChange={(e) => setFirstName(e.target.value)}
+                        onChange={(e) => setName(e.target.value)}
                     />
                 </FormGroup>
                 <FormGroup>
-                    <Label htmlFor="lastName">Last Name</Label>
+                    <Label htmlFor="penName">Pen Name</Label>
                     <Input
-                        id="lastName"
+                        id="penName"
                         type="text"
-                        onChange={(e) => setLastName(e.target.value)}
+                        onChange={(e) => setPenName(e.target.value)}
                     />
                 </FormGroup>
                 <FormGroup>
-                    <Label htmlFor="displayName">Display Name</Label>
+                    <Label htmlFor="profileImage">Profile Image</Label>
                     <Input
-                        id="displayName"
+                        id="profileImage"
                         type="text"
-                        onChange={(e) => setDisplayName(e.target.value)}
+                        onChange={(e) => setProfileImage(e.target.value)}
                     />
                 </FormGroup>
                 <FormGroup>
@@ -63,14 +61,6 @@ export default function Register() {
                         id="email"
                         type="text"
                         onChange={(e) => setEmail(e.target.value)}
-                    />
-                </FormGroup>
-                <FormGroup>
-                    <Label htmlFor="imageLocation">Profile Image URL</Label>
-                    <Input
-                        id="imageLocation"
-                        type="text"
-                        onChange={(e) => setImageLocation(e.target.value)}
                     />
                 </FormGroup>
                 <FormGroup>
