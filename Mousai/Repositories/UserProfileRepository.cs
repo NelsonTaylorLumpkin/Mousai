@@ -154,7 +154,7 @@ namespace Mousai.Repositories
                             Body = DbUtils.GetString(reader, "Body"),
                             PostImage = DbUtils.GetString(reader, "PostImage"),
                             CreatedAt = DbUtils.GetDateTime(reader, "CreatedAt"),
-                            //UserId = DbUtils.GetInt(reader, "UserId")
+                            UserId = DbUtils.GetInt(reader, "UserId")
                         });
 
 
