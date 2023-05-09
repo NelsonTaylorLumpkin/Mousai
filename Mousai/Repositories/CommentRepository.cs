@@ -22,7 +22,7 @@ namespace Mousai.Repositories
                 {
                     cmd.CommandText = @"SELECT c.Id, PostId, UserProfileId, Message, u.PenName
                                         FROM Comment c
-                                        LEFT JOIN User u ON c.UserProfileId = u.Id
+                                        LEFT JOIN [User] u ON c.UserProfileId = u.Id
                                         WHERE PostId = @id";
 
                     cmd.Parameters.AddWithValue("@id", id);

@@ -1,5 +1,5 @@
 ﻿
-using Microsoft.AspNetCore.Authorization;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
@@ -8,8 +8,6 @@ using Mousai.Repositories;
 using Mousai.Utils;
 using System.Collections.Generic;
 using System.Data;
-using System.Reflection.PortableExecutable;
-
 
 namespace Mousai.Repositories
 {
@@ -27,7 +25,6 @@ namespace Mousai.Repositories
         public List<Post> GetAllPublishedPosts()
         {
             using (var conn = new SqlConnection(_connectionString))
-
             {
                 conn.Open();
                 using (var cmd = new SqlCommand())
@@ -35,20 +32,19 @@ namespace Mousai.Repositories
                     cmd.Connection = conn;
                     cmd.CommandText = @"
                        SELECT p.Id, p.Title, p.Body, 
-                              p.PostImage AS PostImage,
-                              p.CreatedAt AS PostCreated, 
-                              p.UserId AS UserProfileId,
-                             
-                              u.Id, u.Name, u.PenName, 
-                              u.Email, u.CreatedAt, u.ProfileImage AS ProfileImage
-                             
-                             
-                         FROM Post p
-                             
-                              LEFT JOIN [User] u ON p.UserId = u.id
-                              
-                        WHERE p.CreatedAt < CURRENT_TIMESTAMP
-                               ORDER BY PostCreated DESC";
+                               p.PostImage AS PostImage,
+                               p.CreatedAt AS PostCreated, 
+                               p.UserId,
+
+                               u.Id, u.Name AS Name, u.PenName AS PenName, 
+                               u.Email AS Email, u.CreatedAt AS CreatedAt, u.ProfileImage AS ProfileImage
+
+                        FROM Post p
+
+                        LEFT JOIN [User] u ON p.UserId = u.Id
+
+                        WHERE p.CreatedAt < GETDATE()
+                        ORDER BY PostCreated DESC";
                     var reader = cmd.ExecuteReader();
 
                     var posts = new List<Post>();
@@ -63,13 +59,7 @@ namespace Mousai.Repositories
                     return posts;
                 }
             }
-            //Id = reader.GetInt32(reader.GetOrdinal("UserProfileId")),
-            //        Name = reader.GetString(reader.GetOrdinal("Name")),
-            //        PenName = reader.GetString(reader.GetOrdinal("PenName")),
 
-            //        Email = reader.GetString(reader.GetOrdinal("Email")),
-            //        CreatedAt = reader.GetDateTime(reader.GetOrdinal("CreatedAt")),
-            //        ProfileImage = DbUtils.GetNullableString(reader, "ProfileImage"),
         }
 
         public Post GetPublishedPostById(int id)
@@ -81,21 +71,20 @@ namespace Mousai.Repositories
                 {
                     cmd.Connection = conn;
                     cmd.CommandText = @"
-                       SELECT p.Id, p.Title, p.Body, 
-                              p.PostImage AS PostImage,
-                              p.CreatedAt, 
-                              p.UserId,
-                             
-                              u.Name, u.PenName, 
-                              u.Email, u.CreatedAt, u.ProfileImage AS ProfileImage
-                            
-                             
-                         FROM Post p
-                             
-                              LEFT JOIN [User] u ON p.UserId = u.id
-                              
-                        WHERE PublishDateTime < SYSDATETIME()
-                              AND p.Id = @id";
+                        SELECT p.Id, p.Title, p.Body, 
+                               p.PostImage AS PostImage,
+                               p.CreatedAt, 
+                               p.UserId AS UserProfileId,
+
+                               u.Name AS [Name], u.PenName AS PenName, 
+                               u.Email AS Email, u.CreatedAt AS CreatedAt, u.ProfileImage AS ProfileImage
+
+                        FROM Post p
+
+                        LEFT JOIN [User] u ON p.UserId = u.Id
+
+                        WHERE p.CreatedAt < GETDATE()
+                        AND p.Id = @id";
 
                     cmd.Parameters.AddWithValue("@id", id);
                     var reader = cmd.ExecuteReader();
@@ -112,6 +101,7 @@ namespace Mousai.Repositories
                     return post;
                 }
             }
+           
         }
 
         public List<Post> GetPostsByUserId(int userId)
@@ -123,21 +113,20 @@ namespace Mousai.Repositories
                 {
                     cmd.Connection = conn;
                     cmd.CommandText = @"
-               SELECT p.Id, p.Title, p.Body, 
-                      p.PostImage AS PostImage,
-                      p.CreatedAt, 
-                      p.UserId,
-                      
-                      u.Name, u.PenName, 
-                      u.Email, u.CreatedAt, u.ProfileImage AS ProfileImage
-                     
-                      
-                 FROM Post p
-                      
-                      LEFT JOIN [User] u ON p.UserId = u.id
-                      
-                WHERE p.UserId = @userId ORDER BY p.CreatedAt";
+                        SELECT p.Id, p.Title, p.Body, 
+                               p.PostImage AS PostImage,
+                               p.CreatedAt, 
+                               p.UserId AS UserProfileId,
 
+                               u.Name AS [Name], u.PenName AS PenName, 
+                               u.Email AS Email, u.CreatedAt AS CreatedAt, u.ProfileImage AS ProfileImage
+
+                        FROM Post p
+
+                        LEFT JOIN UserProfile u ON p.UserId = u.Id
+
+                        WHERE p.UserId = @userId
+                        ORDER BY p.CreatedAt";
 
                     cmd.Parameters.AddWithValue("@userId", userId);
 
@@ -177,9 +166,7 @@ namespace Mousai.Repositories
                     cmd.Parameters.AddWithValue("@Title", post.Title);
                     cmd.Parameters.AddWithValue("@Body", post.Body);
                     cmd.Parameters.AddWithValue("@PostImage", DbUtils.ValueOrDBNull(post.PostImage));
-
                     cmd.Parameters.AddWithValue("@CreatedAt", DbUtils.ValueOrDBNull(post.CreatedAt));
-
                     cmd.Parameters.AddWithValue("@UserId", post.UserId);
 
                     post.Id = (int)cmd.ExecuteScalar();
@@ -195,13 +182,14 @@ namespace Mousai.Repositories
                 using (var cmd = new SqlCommand())
                 {
                     cmd.Connection = conn;
-                    cmd.CommandText = @"UPDATE Post
-                                   SET Title = @title,
-                                       Body = @body,
-                                       PostImage = @postimage,
-                                       CreatedAt = @createdat,
-                                       UserId = @userId
-                                     WHERE Id = @id";
+                    cmd.CommandText = @"
+                        UPDATE Post
+                        SET Title = @title,
+                            Body = @body,
+                            PostImage = @postimage,
+                            CreatedAt = @createdat,
+                            UserId = @userId
+                        WHERE Id = @id";
 
                     cmd.Parameters.AddWithValue("@title", post.Title);
                     cmd.Parameters.AddWithValue("@body", post.Body);
@@ -236,33 +224,24 @@ namespace Mousai.Repositories
         {
             int postId = reader.GetInt32(reader.GetOrdinal("Id"));
 
-
             return new Post()
             {
-
-                Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                Id = postId,
                 Title = reader.GetString(reader.GetOrdinal("Title")),
                 Body = reader.GetString(reader.GetOrdinal("Body")),
                 PostImage = DbUtils.GetNullableString(reader, "PostImage"),
-                //CreatedAt = reader.GetDateTime(reader.GetOrdinal("CreatedAt")),
-
-
+                CreatedAt = reader.GetDateTime(reader.GetOrdinal("PostCreated")),
+                UserId = reader.GetInt32(reader.GetOrdinal("Id")),
                 UserProfile = new UserProfile()
                 {
-                    Id = reader.GetInt32(reader.GetOrdinal("UserProfileId")),
+                    Id = reader.GetInt32(reader.GetOrdinal("Id")),
                     Name = reader.GetString(reader.GetOrdinal("Name")),
                     PenName = reader.GetString(reader.GetOrdinal("PenName")),
-
                     Email = reader.GetString(reader.GetOrdinal("Email")),
-                    //CreatedAt = reader.GetDateTime(reader.GetOrdinal("CreatedAt")),
+                    CreatedAt = reader.GetDateTime(reader.GetOrdinal("CreatedAt")),
                     ProfileImage = DbUtils.GetNullableString(reader, "ProfileImage"),
-
                 }
             };
-
         }
-
-
     }
-
 }

@@ -18,11 +18,11 @@ namespace Mousai.Repositories
         public List<UserProfile> GetUsers()
         {
             using (var conn = Connection)
-                conn.Open();
+            conn.Open();
             using (var cmd = Connection.CreateCommand())
             {
                 cmd.CommandText = @"
-                    SELECT Id, Name, CreatedAt, PenName, Email, ProfileImage FROM User";
+                    SELECT Id, Name, CreatedAt, PenName, Email, ProfileImage FROM UserProfile";
 
                 using (SqlDataReader reader = cmd.ExecuteReader())
                 {
@@ -106,69 +106,173 @@ namespace Mousai.Repositories
         public UserProfile GetByFirebaseUserId(string id)
         {
             using (var conn = Connection)
-
-                conn.Open();
-            using (var cmd = Connection.CreateCommand())
             {
-                cmd.CommandText = @"
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
                         SELECT u.Id, u.FirebaseUserId, u.[Name],
                         u.Email, u.CreatedAt AS UserCreatedDate,
                         u.ProfileImage, p.Id AS PostId,
                         p.Title, p.Body,
                         p.UserId, p.CreatedAt AS PostCreatedDate
-                        FROM User u
+                        FROM [User] u
                         LEFT JOIN Post p ON p.UserId = u.Id
                         WHERE u.FirebaseUserId = @Id";
 
-                DbUtils.AddParameter(cmd, "id", id);
-                using (SqlDataReader reader = cmd.ExecuteReader())
-                {
-                    UserProfile user = null;
-                    while (reader.Read())
+                    DbUtils.AddParameter(cmd, "id", id);
+                    using (SqlDataReader reader = cmd.ExecuteReader())
                     {
-                        if (user == null)
+                        UserProfile user = null;
+                        while (reader.Read())
                         {
-                            user = new UserProfile()
+                            if (user == null)
                             {
-                                Id = DbUtils.GetInt(reader, "Id"),
-                                FirebaseUserId = DbUtils.GetString(reader, "FirebaseUserId"),
-                                Name = DbUtils.GetString(reader, "Name"),
-                                Email = DbUtils.GetString(reader, "Email"),
-                                CreatedAt = DbUtils.GetDateTime(reader, "CreatedAt"),
-                                ProfileImage = DbUtils.GetString(reader, "ProfileImage"),
-                                PenName = DbUtils.GetString(reader, "PenName"),
-                                Posts = new List<Post>()
+                                user = new UserProfile()
+                                {
+                                    Id = DbUtils.GetInt(reader, "Id"),
+                                    FirebaseUserId = DbUtils.GetString(reader, "FirebaseUserId"),
+                                    Name = DbUtils.GetString(reader, "Name"),
+                                    Email = DbUtils.GetString(reader, "Email"),
+                                    CreatedAt = DbUtils.GetDateTime(reader, "CreatedAt"),
+                                    ProfileImage = DbUtils.GetString(reader, "ProfileImage"),
+                                    PenName = DbUtils.GetString(reader, "PenName"),
+                                    Posts = new List<Post>()
+                                };
+
                             };
-
-                        };
-                    }
+                        }
 
 
 
-                    if (DbUtils.IsNotDbNull(reader, "PostId"))
-                    {
-                        user.Posts.Add(new Post()
+                        if (DbUtils.IsNotDbNull(reader, "PostId"))
                         {
-                            Id = DbUtils.GetInt(reader, "PostId"),
-                            Title = DbUtils.GetString(reader, "Title"),
-                            Body = DbUtils.GetString(reader, "Body"),
-                            PostImage = DbUtils.GetString(reader, "PostImage"),
-                            CreatedAt = DbUtils.GetDateTime(reader, "CreatedAt"),
-                            UserId = DbUtils.GetInt(reader, "UserId")
-                        });
+                            user.Posts.Add(new Post()
+                            {
+                                Id = DbUtils.GetInt(reader, "PostId"),
+                                Title = DbUtils.GetString(reader, "Title"),
+                                Body = DbUtils.GetString(reader, "Body"),
+                                PostImage = DbUtils.GetString(reader, "PostImage"),
+                                CreatedAt = DbUtils.GetDateTime(reader, "CreatedAt"),
+                                UserId = DbUtils.GetInt(reader, "UserId")
+                            });
 
+
+                        }
+
+
+                        return user;
 
                     }
-
-
-                    return user;
-
-                    
 
                 }
             }
         }
+        //public UserProfile GetById(int id)
+        //{
+        //    using (var conn = Connection)
+        //    {
+        //        conn.Open();
+        //        using (var cmd = conn.CreateCommand())
+        //        {
+        //            cmd.CommandText = @"
+        //        SELECT u.Id, u.[Name], u.Email, u.CreatedAt AS UserCreatedDate,
+        //               u.ProfileImage, p.Id AS PostId, p.Title, p.Body,
+        //               p.UserId, p.CreatedAt AS PostCreatedDate
+        //        FROM [User] u
+        //        LEFT JOIN Post p ON p.UserId = u.Id
+        //        WHERE u.Id = @Id";
 
+        //            DbUtils.AddParameter(cmd, "@Id", id);
+
+        //            using (SqlDataReader reader = cmd.ExecuteReader())
+        //            {
+        //                UserProfile user = null;
+        //                while (reader.Read())
+        //                {
+        //                    if (user == null)
+        //                    {
+        //                        user = new UserProfile()
+        //                        {
+        //                            Id = DbUtils.GetInt(reader, "Id"),
+        //                            Name = DbUtils.GetString(reader, "Name"),
+        //                            Email = DbUtils.GetString(reader, "Email"),
+        //                            CreatedAt = DbUtils.GetDateTime(reader, "UserCreatedDate"),
+        //                            ProfileImage = DbUtils.GetString(reader, "ProfileImage"),
+        //                            Posts = new List<Post>()
+        //                        };
+        //                    }
+        //                    if (DbUtils.IsNotDbNull(reader, "PostId"))
+        //                    {
+        //                        user.Posts.Add(new Post()
+        //                        {
+        //                            Id = DbUtils.GetInt(reader, "PostId"),
+        //                            Title = DbUtils.GetString(reader, "Title"),
+        //                            Body = DbUtils.GetString(reader, "Body"),
+        //                            UserId = DbUtils.GetInt(reader, "UserId"),
+        //                            CreatedAt = DbUtils.GetDateTime(reader, "PostCreatedDate")
+        //                        });
+        //                    }
+        //                }
+        //                return user;
+        //            }
+        //        }
+        //    }
+        //}
+
+        //public UserProfile GetByFirebaseUserId(string id)
+        //{
+        //    using (var conn = Connection)
+        //    {
+        //        conn.Open();
+        //        using (var cmd = conn.CreateCommand())
+        //        {
+        //            cmd.CommandText = @"
+        //        SELECT u.Id, u.FirebaseUserId, u.[Name], u.Email,
+        //               u.CreatedAt AS UserCreatedDate, u.ProfileImage,
+        //               p.Id AS PostId, p.Title, p.Body, p.UserId,
+        //               p.CreatedAt AS PostCreatedDate
+        //        FROM [User] u
+        //        LEFT JOIN Post p ON p.UserId = u.Id
+        //        WHERE u.FirebaseUserId = @FirebaseUserId";
+
+        //            DbUtils.AddParameter(cmd, "@FirebaseUserId", id);
+
+        //            using (SqlDataReader reader = cmd.ExecuteReader())
+        //            {
+        //                UserProfile user = null;
+        //                while (reader.Read())
+        //                {
+        //                    if (user == null)
+        //                    {
+        //                        user = new UserProfile()
+        //                        {
+        //                            Id = DbUtils.GetInt(reader, "Id"),
+        //                            FirebaseUserId = DbUtils.GetString(reader, "FirebaseUserId"),
+        //                            Name = DbUtils.GetString(reader, "Name"),
+        //                            Email = DbUtils.GetString(reader, "Email"),
+        //                            CreatedAt = DbUtils.GetDateTime(reader, "UserCreatedDate"),
+        //                            ProfileImage = DbUtils.GetString(reader, "ProfileImage"),
+        //                            Posts = new List<Post>()
+        //                        };
+        //                    }
+        //                    if (DbUtils.IsNotDbNull(reader, "PostId"))
+        //                    {
+        //                        user.Posts.Add(new Post()
+        //                        {
+        //                            Id = DbUtils.GetInt(reader, "PostId"),
+        //                            Title = DbUtils.GetString(reader, "Title"),
+        //                            Body = DbUtils.GetString(reader, "Body"),
+        //                            UserId = DbUtils.GetInt(reader, "UserId"),
+        //                            CreatedAt = DbUtils.GetDateTime(reader, "PostCreatedDate")
+        //                        });
+        //                    }
+        //                }
+        //                return user;
+        //            }
+        //        }
+        //    }
+        //}
 
 
         public void Add(UserProfile user)
@@ -185,7 +289,7 @@ namespace Mousai.Repositories
 
                     DbUtils.AddParameter(cmd, "@Name", user.Name);
                     DbUtils.AddParameter(cmd, "@Email", user.Email);
-
+                    DbUtils.AddParameter(cmd, "@CreatedAt", user.CreatedAt);
                     DbUtils.AddParameter(cmd, "@PenName", user.PenName);
                     DbUtils.AddParameter(cmd, "@ProfileImage", user.ProfileImage);
                     user.CreatedAt = DateTime.Now;

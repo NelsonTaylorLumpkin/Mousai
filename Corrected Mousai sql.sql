@@ -1,9 +1,9 @@
 ﻿-- Users
 INSERT INTO [User] (FirebaseUserId, Name, Email, PenName, ProfileImage, CreatedAt)
-VALUES ('abc123', 'Alice', 'alice@example.com', 'MoonlitMuse', 'alice.jpg', '2023-01-01');
+VALUES ('XzkCESaoZcRHpgYzSgq2ZSQhRnO2', 'Nelson', 'ossocasa@gmail.com', 'MoonlitMuse', 'alice.jpg', '2023-01-01');
 
 INSERT INTO [User] (FirebaseUserId, Name, Email, PenName, ProfileImage, CreatedAt)
-VALUES ('def456', 'Bob', 'bob@example.com', 'WhimsicalWhale', 'bob.jpg', '2023-02-01');
+VALUES ('aNjSMQqBRKbfQ0j5JuyyOVlCCUj1', 'Bobby Bigwaters', 'dr.bigwaters@yahooaiasks.com', 'WhimsicalWhale', 'bob.jpg', '2023-02-01');
 
 INSERT INTO [User] (FirebaseUserId, Name, Email, PenName, ProfileImage, CreatedAt)
 VALUES ('ghi789', 'Carol', 'carol@example.com', 'SurrealSerpent', 'carol.jpg', '2023-03-01');

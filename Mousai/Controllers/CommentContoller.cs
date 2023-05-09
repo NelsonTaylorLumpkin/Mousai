@@ -15,7 +15,7 @@ namespace Mousai.Controllers
             _commentRepository = commentRepository;
         }
 
-        [Authorize]
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create(Comment comment)
@@ -36,7 +36,7 @@ namespace Mousai.Controllers
             return RedirectToAction("Details", "Post", new { id = comment.PostId });
         }
 
-        [Authorize]
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(Comment comment)
@@ -56,7 +56,7 @@ namespace Mousai.Controllers
             return RedirectToAction("Details", "Post", new { id = comment.PostId });
         }
 
-        [Authorize]
+       
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Delete(int id)

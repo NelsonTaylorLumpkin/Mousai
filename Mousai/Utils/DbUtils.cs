@@ -24,6 +24,21 @@ namespace Mousai.Utils
 
             return reader.GetString(ordinal);
         }
+        //public static string GetString(SqlDataReader reader, string column)
+        //{
+        //    var ordinal = reader.GetOrdinal(column);
+        //    if (reader.IsDBNull(ordinal))
+        //    {
+        //        return null;
+        //    }
+
+        //    if (reader.Read())
+        //    {
+        //        return reader.GetString(ordinal);
+        //    }
+
+        //    return null;
+        //}
         public static string GetNullableString(SqlDataReader reader, string column)
         {
             var ordinal = reader.GetOrdinal(column);

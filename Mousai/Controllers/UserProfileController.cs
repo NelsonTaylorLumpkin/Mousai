@@ -8,18 +8,20 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Mousai.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
+   
     public class UserProfileController : ControllerBase
     {
-        private readonly IUserProfileRepository _userProfileRepository;
+        public IUserProfileRepository _userProfileRepository;
         public UserProfileController(IUserProfileRepository userProfileRepository)
         {
             _userProfileRepository = userProfileRepository;
         }
 
         // GET: api/<UserProfileController>
-        [Authorize]
+       
         [HttpGet]
         public IActionResult Get()
         {
@@ -27,7 +29,7 @@ namespace Mousai.Controllers
         }
 
         // GET api/<UserProfileController>/5
-        [Authorize]
+        
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
@@ -40,7 +42,7 @@ namespace Mousai.Controllers
         }
 
         // GET api/<UserProfileController>/firebase/{id}
-        [Authorize]
+        
         [HttpGet("firebase/{id}")]
         public IActionResult GetByFirebaseUserId(string id)
         {
@@ -61,7 +63,7 @@ namespace Mousai.Controllers
         }
 
         // PUT api/<UserProfileController>/5
-        [Authorize]
+        
         [HttpPut("{id}")]
         public IActionResult Put(int id, UserProfile user)
         {
@@ -75,7 +77,7 @@ namespace Mousai.Controllers
         }
 
         // DELETE api/<UserProfileController>/5
-        [Authorize]
+        
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
