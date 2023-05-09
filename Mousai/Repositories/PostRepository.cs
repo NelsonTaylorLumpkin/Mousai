@@ -230,7 +230,7 @@ namespace Mousai.Repositories
                 Title = reader.GetString(reader.GetOrdinal("Title")),
                 Body = reader.GetString(reader.GetOrdinal("Body")),
                 PostImage = DbUtils.GetNullableString(reader, "PostImage"),
-                CreatedAt = reader.GetDateTime(reader.GetOrdinal("PostCreated")),
+                CreatedAt = reader.GetDateTime(reader.GetOrdinal("CreatedAt")),
                 UserId = reader.GetInt32(reader.GetOrdinal("Id")),
                 UserProfile = new UserProfile()
                 {
