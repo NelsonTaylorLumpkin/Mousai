@@ -120,7 +120,7 @@ namespace Mousai.Repositories
                 {
                     cmd.CommandText = @"
                         SELECT u.Id, u.FirebaseUserId, u.[Name],
-                        u.Email, u.CreatedAt AS UserCreatedDate,
+                        u.Email, u.PenName, u.CreatedAt AS UserCreatedDate,
                         u.ProfileImage, p.Id AS PostId,
                         p.Title, p.Body,
                         p.UserId, p.CreatedAt AS PostCreatedDate
@@ -128,7 +128,7 @@ namespace Mousai.Repositories
                         LEFT JOIN Post p ON p.UserId = u.Id
                         WHERE u.FirebaseUserId = @Id";
 
-                    DbUtils.AddParameter(cmd, "id", id);
+                    DbUtils.AddParameter(cmd, "@Id", id);
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
                         UserProfile user = null;
@@ -142,7 +142,7 @@ namespace Mousai.Repositories
                                     FirebaseUserId = DbUtils.GetString(reader, "FirebaseUserId"),
                                     Name = DbUtils.GetString(reader, "Name"),
                                     Email = DbUtils.GetString(reader, "Email"),
-                                    CreatedAt = DbUtils.GetDateTime(reader, "CreatedAt"),
+                                    CreatedAt = DbUtils.GetDateTime(reader, "UserCreatedDate"),
                                     ProfileImage = DbUtils.GetString(reader, "ProfileImage"),
                                     PenName = DbUtils.GetString(reader, "PenName"),
                                     Posts = new List<Post>()

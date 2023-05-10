@@ -3,6 +3,7 @@ using System;
 using Mousai.Repositories;
 using Mousai.Models;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -10,7 +11,7 @@ namespace Mousai.Controllers
 {
    
     [Route("api/[controller]")]
-    //[Authorize]
+    [Authorize]
     [ApiController]
    
     public class UserProfileController : ControllerBase
@@ -43,7 +44,28 @@ namespace Mousai.Controllers
         }
 
         // GET api/<UserProfileController>/firebase/{id}
-        
+        [HttpGet("Me")]
+        public IActionResult Me()
+        {
+            var userProfile = GetCurrentUserProfile();
+            if (userProfile == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(userProfile);
+        }
+
+        [HttpGet("DoesUserExist/{firebaseUserId}")]
+        public IActionResult DoesUserExist(string firebaseUserId)
+        {
+            var userProfile = _userProfileRepository.GetByFirebaseUserId(firebaseUserId);
+            if (userProfile == null)
+            {
+                return NotFound();
+            }
+            return Ok();
+        }
         [HttpGet("firebase/{id}")]
         public IActionResult GetByFirebaseUserId(string id)
         {
@@ -84,6 +106,11 @@ namespace Mousai.Controllers
         {
             _userProfileRepository.Delete(id);
             return NoContent();
+        }
+        private UserProfile GetCurrentUserProfile()
+        {
+            var firebaseUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            return _userProfileRepository.GetByFirebaseUserId(firebaseUserId);
         }
     }
 }

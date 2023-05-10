@@ -84,11 +84,30 @@ namespace Mousai.Utils
         /// <param name="reader">A SqlDataReader that has not exhausted it's result set.</param>
         /// <param name="column">The name of the column from the result set referred to by the reader.</param>
         /// <returns>true if "column" is NULL in the database otherwise false.</returns>
+        //public static bool IsDbNull(SqlDataReader reader, string column)
+        //{
+        //    return reader.IsDBNull(reader.GetOrdinal(column));
+        //}
         public static bool IsDbNull(SqlDataReader reader, string column)
         {
-            return reader.IsDBNull(reader.GetOrdinal(column));
+            if (reader == null || !reader.HasRows)
+            {
+                return true; // Return true if there are no rows to read
+            }
+            else
+            {
+                try
+                {
+                    return reader.IsDBNull(reader.GetOrdinal(column));
+                }
+                catch (Exception ex)
+                {
+                    // Handle any exceptions that may occur
+                    Console.WriteLine("Error: " + ex.Message);
+                    return true;
+                }
+            }
         }
-
         /// <summary>
         ///  Determine if the value a given column is not NULL.
         /// </summary>

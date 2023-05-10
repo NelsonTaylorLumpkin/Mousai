@@ -5,6 +5,7 @@ using Mousai.Repositories;
 namespace Mousai.Controllers
 {
     [Route("api/[controller]")]
+    
     [ApiController]
     public class FollowController : ControllerBase
     {
