@@ -8,6 +8,7 @@ import UserProfileDetails from "./UserProfileDetails";
 import PostList from "./PostList";
 
 
+
 import PostForm from "./PostForm";
 
 export default function ApplicationViews({ isLoggedIn }) {
@@ -22,7 +23,7 @@ export default function ApplicationViews({ isLoggedIn }) {
                     <Route path="Post" element={<PostList />} />
                     <Route path="add" element={isLoggedIn ? <PostForm /> : <Navigate to="/login" />} />
                     <Route path="login" element={<Login />} />
-                    <Route path="register" element={<Register />} />
+                    <Route path="Register" element={<Register />} />
                     <Route path="userprofile" element={<UserProfiles />} />
                     <Route path="userprofile/:id" element={<UserProfileDetails />} />
 

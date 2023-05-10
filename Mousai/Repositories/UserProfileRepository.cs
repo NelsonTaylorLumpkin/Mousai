@@ -9,45 +9,53 @@ using Mousai.Models;
 using Mousai.Utils;
 namespace Mousai.Repositories
 {
-    public class UserProfileRepository : BaseRepository, IUserProfileRepository
+    public class UserProfileRepository : IUserProfileRepository
     {
 
-
-        public UserProfileRepository(IConfiguration configuration) : base(configuration) { }
+        private readonly IConfiguration _configuration;
+        private readonly string _connectionString;
+        public UserProfileRepository(IConfiguration configuration) 
+        {
+            _configuration = configuration;
+            _connectionString = _configuration.GetConnectionString("DefaultConnection");
+        }
 
         public List<UserProfile> GetUsers()
         {
-            using (var conn = Connection)
-            conn.Open();
-            using (var cmd = Connection.CreateCommand())
+            using (var conn = new SqlConnection(_connectionString))
             {
-                cmd.CommandText = @"
-                    SELECT Id, Name, CreatedAt, PenName, Email, ProfileImage FROM UserProfile";
-
-                using (SqlDataReader reader = cmd.ExecuteReader())
+                conn.Open();
+                using (var cmd = new SqlCommand())
                 {
-                    var profiles = new List<UserProfile>();
-                    while (reader.Read())
+                    cmd.Connection = conn;
+                    cmd.CommandText = @"
+                    SELECT Id, [Name], CreatedAt, PenName, Email, ProfileImage FROM [User]";
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
                     {
-                        profiles.Add(new UserProfile()
+                        var profiles = new List<UserProfile>();
+                        while (reader.Read())
                         {
-                            Id = DbUtils.GetInt(reader, "Id"),
-                            Name = DbUtils.GetString(reader, "Name"),
-                            PenName = DbUtils.GetString(reader, "PenName"),
-                            Email = DbUtils.GetString(reader, "Email"),
-                            ProfileImage = DbUtils.GetString(reader, "ProfileImage"),
-                            CreatedAt = DbUtils.GetDateTime(reader, "CreatedAt")
-                        });
+                            profiles.Add(new UserProfile()
+                            {
+                                Id = DbUtils.GetInt(reader, "Id"),
+                                Name = DbUtils.GetString(reader, "Name"),
+                                PenName = DbUtils.GetString(reader, "PenName"),
+                                Email = DbUtils.GetString(reader, "Email"),
+                                ProfileImage = DbUtils.GetString(reader, "ProfileImage"),
+                                CreatedAt = DbUtils.GetDateTime(reader, "CreatedAt")
+                            });
 
 
+                        }
+                        return profiles;
                     }
-                    return profiles;
                 }
             }
         }
         public UserProfile GetById(int id)
         {
-            using (var conn = Connection)
+            using (var conn = new SqlConnection(_connectionString))
             {
                 conn.Open();
                 using (var cmd = conn.CreateCommand())
@@ -55,12 +63,12 @@ namespace Mousai.Repositories
                     cmd.CommandText = @"
                     SELECT u.Id, u.[Name],
                     u.Email, u.CreatedAt AS UserCreatedDate,
-                    u.ProfileImage, p.Id AS PostId
+                    u.ProfileImage, p.Id AS PostId,
                     p.Title, p.Body,
                     p.UserId, p.CreatedAt AS PostCreatedDate
-                    FROM User u
-                    LEFT JOIN Post p ON p.UserId = up.Id
-                    WHERE up.Id = @Id";
+                    FROM [User] u
+                    LEFT JOIN Post p ON p.UserId = u.Id
+                    WHERE u.Id = @Id";
 
                     DbUtils.AddParameter(cmd, "id", id);
 
@@ -105,7 +113,7 @@ namespace Mousai.Repositories
 
         public UserProfile GetByFirebaseUserId(string id)
         {
-            using (var conn = Connection)
+            using (var conn = new SqlConnection(_connectionString))
             {
                 conn.Open();
                 using (var cmd = conn.CreateCommand())
@@ -277,13 +285,13 @@ namespace Mousai.Repositories
 
         public void Add(UserProfile user)
         {
-            using (var conn = Connection)
+            using (var conn = new SqlConnection(_connectionString))
             {
                 conn.Open();
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                        INSERT INTO UserProfile (Name, Email, CreatedAt, ProfileImage, PenName)
+                        INSERT INTO User ([Name], Email, CreatedAt, ProfileImage, PenName)
                         Output Inserted.ID
                         Values (@Name, @Email, @CreatedAt, @ProfileImage, @PenName)";
 
@@ -300,7 +308,7 @@ namespace Mousai.Repositories
 
         public void Update(UserProfile user)
         {
-            using (var conn = Connection)
+            using (var conn = new SqlConnection(_connectionString))
             {
                 conn.Open();
                 using (var cmd = conn.CreateCommand())
@@ -328,7 +336,7 @@ namespace Mousai.Repositories
 
         public void Delete(int id)
         {
-            using (var conn = Connection)
+            using (var conn = new SqlConnection(_connectionString))
             {
                 conn.Open();
                 using (var cmd = conn.CreateCommand())

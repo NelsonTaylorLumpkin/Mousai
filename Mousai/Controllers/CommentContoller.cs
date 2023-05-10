@@ -17,7 +17,7 @@ namespace Mousai.Controllers
 
         
         [HttpPost]
-        [ValidateAntiForgeryToken]
+       
         public IActionResult Create(Comment comment)
         {
             if (ModelState.IsValid)
@@ -37,8 +37,8 @@ namespace Mousai.Controllers
         }
 
         
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        [HttpPut]
+        
         public IActionResult Edit(Comment comment)
         {
             if (ModelState.IsValid)
@@ -57,8 +57,8 @@ namespace Mousai.Controllers
         }
 
        
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        [HttpDelete]
+     
         public IActionResult Delete(int id)
         {
             try

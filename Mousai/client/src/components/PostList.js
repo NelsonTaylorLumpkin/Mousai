@@ -1,32 +1,30 @@
-// import React, { useEffect, useState } from "react";
-// import Post from './Post';
-// import getPosts from "./postManager";
-// import PostForm from './PostForm';
+
+// import { useState, useEffect } from "react";
+// import { getPosts } from "../modules/postManager";
 
 // const PostList = () => {
 //     const [posts, setPosts] = useState([]);
 
-//     const getPosts = () => {
-//         getAllPosts().then(data => setPosts(data));
-//     };
-
 //     useEffect(() => {
-//         getPosts();
+//         getPosts().then((posts) => setPosts(posts));
 //     }, []);
 
-
 //     return (
-//         <div className="container">
-//             <div className="row justify-content-center">
-//                 {posts.map((p) => (
-//                     <Post post={p} key={p.id} />
+//         <div>
+//             <h1>Posts</h1>
+//             <ul>
+//                 {posts.map((post) => (
+//                     <li key={post.id}>
+//                         <h2>{post.title}</h2>
+//                         <p>{post.body}</p>
+//                     </li>
 //                 ))}
-//             </div>
+//             </ul>
 //         </div>
 //     );
 // };
 
-// export default PostList
+// export default PostList;
 import React, { useEffect, useState } from "react";
 import Post from './Post';
 import { getPosts } from "../modules/postManager";

@@ -19,7 +19,7 @@ namespace Mousai.Controllers
         public ActionResult<Follow> AddFollow(Follow follow)
         {
             var newFollow = _followRepository.AddFollow(follow);
-            return CreatedAtAction(nameof(follow), new { id = newFollow.Id }, newFollow);
+            return CreatedAtAction(nameof(AddFollow), new { id = newFollow.Id }, newFollow);
         }
 
         [HttpGet("{followingUserId}/{followedUserId}")]

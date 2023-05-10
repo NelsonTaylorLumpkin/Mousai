@@ -5,7 +5,7 @@ const userUrl = '/api/userprofile';
 
 export const getPosts = () => {
     return getToken().then((token) => {
-        return fetch(baseUrl, {
+        return fetch(`${baseUrl}/GetAll`, {
             method: "GET",
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -71,7 +71,28 @@ export const addPost = (post) => {
     });
 };
 
-export const editPostComment = (commentId) => {
+export const deletePost = (postId) => {
+    return getToken().then((token) => {
+        return fetch(`${baseUrl}/${postId}`, {
+            method: "DELETE",
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        }).then((resp) => {
+            if (resp.ok) {
+                return;
+            } else if (resp.status === 401) {
+                throw new Error("Unauthorized");
+            } else {
+                throw new Error(
+                    "An unknown error occurred while trying to delete the post"
+                );
+            }
+        });
+    });
+};
+
+export const editPostComment = (commentId, comment) => {
     return getToken().then((token) => {
         return fetch(`${baseUrl}/EditComment/${commentId}`, {
             method: "PUT",
@@ -79,7 +100,19 @@ export const editPostComment = (commentId) => {
                 Authorization: `Bearer ${token}`,
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify(Comment)
+            body: JSON.stringify(comment)
         })
-    })
-}
+            .then((resp) => {
+                if (resp.ok) {
+                    return resp.json();
+                } else if (resp.status === 401) {
+                    throw new Error("Unauthorized");
+                } else {
+                    throw new Error(
+                        "An unknown error occurred while trying to edit comment"
+                    );
+                }
+            });
+    });
+};
+

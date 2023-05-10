@@ -14,7 +14,7 @@ export const allUsers = () => {
         }).then(resp => resp.json()));
 };
 
-export const userById = (userId) => {
+export const getUserById = (userId) => {
     return getToken().then((token) =>
         fetch(`${baseUrl}/${userId}`, {
             method: "GET",

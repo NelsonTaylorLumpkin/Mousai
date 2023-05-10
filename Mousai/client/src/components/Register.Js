@@ -1,15 +1,13 @@
 import React, { useState } from "react";
-import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
+import { Button, Form, FormGroup, Label, Input } from "reactstrap";
 import { useNavigate } from "react-router-dom";
 import { register } from "../modules/authManager";
 
 export default function Register() {
     const navigate = useNavigate();
 
-    const [name, setName] = useState();
-    const [penName, setPenName] = useState();
+    const [Name, setName] = useState();
     const [email, setEmail] = useState();
-    const [profileImage, setProfileImage] = useState();
     const [password, setPassword] = useState();
     const [confirmPassword, setConfirmPassword] = useState();
 
@@ -18,13 +16,8 @@ export default function Register() {
         if (password && password !== confirmPassword) {
             alert("Passwords don't match. Do better.");
         } else {
-            const user = {
-                name,
-                penName,
-                profileImage,
-                email,
-            };
-            register(user, password).then(() => navigate("/"));
+            const userProfile = { Name, email };
+            register(userProfile, password).then(() => navigate("/"));
         }
     };
 
@@ -34,25 +27,10 @@ export default function Register() {
                 <FormGroup>
                     <Label htmlFor="name">Name</Label>
                     <Input
-                        id="name"
+                        id="fullName"
                         type="text"
+                        autoFocus
                         onChange={(e) => setName(e.target.value)}
-                    />
-                </FormGroup>
-                <FormGroup>
-                    <Label htmlFor="penName">Pen Name</Label>
-                    <Input
-                        id="penName"
-                        type="text"
-                        onChange={(e) => setPenName(e.target.value)}
-                    />
-                </FormGroup>
-                <FormGroup>
-                    <Label htmlFor="profileImage">Profile Image</Label>
-                    <Input
-                        id="profileImage"
-                        type="text"
-                        onChange={(e) => setProfileImage(e.target.value)}
                     />
                 </FormGroup>
                 <FormGroup>
@@ -86,3 +64,93 @@ export default function Register() {
         </Form>
     );
 }
+// import React, { useState } from "react";
+// import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
+// import { useNavigate } from "react-router-dom";
+// import { register } from "../modules/authManager";
+
+// export default function Register() {
+//     const navigate = useNavigate();
+
+//     const [name, setName] = useState();
+//     const [penName, setPenName] = useState();
+//     const [email, setEmail] = useState();
+//     const [profileImage, setProfileImage] = useState();
+//     const [password, setPassword] = useState();
+//     const [confirmPassword, setConfirmPassword] = useState();
+//     const [isRegistering, setIsRegistering] = useState(false);
+
+//     const registerClick = (e) => {
+//         e.preventDefault();
+//         if (password && password !== confirmPassword) {
+//             alert("Passwords don't match. Do better.");
+//         } else {
+//             const user = {
+//                 name,
+//                 penName,
+//                 profileImage,
+//                 email,
+//             };
+//             setIsRegistering(true);
+//             register(user, password).then(() => navigate("/")).finally(() => setIsRegistering(false));
+//         }
+//     };
+
+//     return (
+//         <Form onSubmit={registerClick}>
+//             <fieldset>
+//                 <FormGroup>
+//                     <Label htmlFor="name">Name</Label>
+//                     <Input
+//                         id="name"
+//                         type="text"
+//                         onChange={(e) => setName(e.target.value)}
+//                     />
+//                 </FormGroup>
+//                 <FormGroup>
+//                     <Label htmlFor="penName">Pen Name</Label>
+//                     <Input
+//                         id="penName"
+//                         type="text"
+//                         onChange={(e) => setPenName(e.target.value)}
+//                     />
+//                 </FormGroup>
+//                 <FormGroup>
+//                     <Label htmlFor="profileImage">Profile Image</Label>
+//                     <Input
+//                         id="profileImage"
+//                         type="text"
+//                         onChange={(e) => setProfileImage(e.target.value)}
+//                     />
+//                 </FormGroup>
+//                 <FormGroup>
+//                     <Label for="email">Email</Label>
+//                     <Input
+//                         id="email"
+//                         type="text"
+//                         onChange={(e) => setEmail(e.target.value)}
+//                     />
+//                 </FormGroup>
+//                 <FormGroup>
+//                     <Label for="password">Password</Label>
+//                     <Input
+//                         id="password"
+//                         type="password"
+//                         onChange={(e) => setPassword(e.target.value)}
+//                     />
+//                 </FormGroup>
+//                 <FormGroup>
+//                     <Label for="confirmPassword">Confirm Password</Label>
+//                     <Input
+//                         id="confirmPassword"
+//                         type="password"
+//                         onChange={(e) => setConfirmPassword(e.target.value)}
+//                     />
+//                 </FormGroup>
+//                 <FormGroup>
+//                     <Button>Register</Button>
+//                 </FormGroup>
+//             </fieldset>
+//         </Form>
+//     );
+// }

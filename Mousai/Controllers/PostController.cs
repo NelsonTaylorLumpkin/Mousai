@@ -9,6 +9,7 @@ namespace Mousai.Controllers
 {
     
     [Route("api/[controller]")]
+    //[Authorize]
     [ApiController]
     public class PostController : ControllerBase
     {
@@ -30,7 +31,7 @@ namespace Mousai.Controllers
             _followRepository = followRepository;
         }
 
-        [HttpGet]
+        [HttpGet("GetAll")]
         public IActionResult GetAll()
         {
             return Ok(_postRepository.GetAllPublishedPosts());
