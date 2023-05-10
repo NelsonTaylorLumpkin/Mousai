@@ -10,6 +10,7 @@ import PostList from "./PostList";
 
 
 import PostForm from "./PostForm";
+import Post from "./Post";
 
 export default function ApplicationViews({ isLoggedIn }) {
     return (
@@ -22,6 +23,8 @@ export default function ApplicationViews({ isLoggedIn }) {
                     />
                     <Route path="Post" element={<PostList />} />
                     <Route path="add" element={isLoggedIn ? <PostForm /> : <Navigate to="/login" />} />
+                    <Route path="edit" element={isLoggedIn ? <PostForm /> : <Navigate to="/myPosts" />} />
+
                     <Route path="login" element={<Login />} />
                     <Route path="Register" element={<Register />} />
                     <Route path="userprofile" element={<UserProfiles />} />

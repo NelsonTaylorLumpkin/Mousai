@@ -118,17 +118,21 @@ namespace Mousai.Repositories
                                p.CreatedAt, 
                                p.UserId AS UserProfileId,
 
-                               u.Name AS [Name], u.PenName AS PenName, 
-                               u.Email AS Email, u.CreatedAt AS CreatedAt, u.ProfileImage AS ProfileImage
+                               u.Name AS [Name], 
+                               u.PenName AS PenName, 
+                               u.Email AS Email, 
+                               u.CreatedAt AS CreatedAt, 
+                               u.ProfileImage AS ProfileImage
 
-                        FROM Post p
+                               FROM Post p
 
-                        LEFT JOIN UserProfile u ON p.UserId = u.Id
+                        LEFT JOIN [User] u ON p.UserId = u.Id
 
                         WHERE p.UserId = @userId
                         ORDER BY p.CreatedAt";
 
                     cmd.Parameters.AddWithValue("@userId", userId);
+                    
 
                     var reader = cmd.ExecuteReader();
 

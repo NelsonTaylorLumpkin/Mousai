@@ -72,6 +72,30 @@ export const addPost = (post) => {
     });
 };
 
+export const editPost = (postId, post) => {
+    return getToken().then((token) => {
+        return fetch(`${baseUrl}/${postId}`, {
+            method: "PUT",
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(post),
+        })
+            .then((resp) => {
+                if (resp.ok) {
+                    return resp.json();
+                } else if (resp.status === 401) {
+                    throw new Error("Unauthorized");
+                } else {
+                    throw new Error(
+                        "An unknown error occurred while trying to edit the post"
+                    );
+                }
+            });
+    });
+};
+
 export const deletePost = (postId) => {
     return getToken().then((token) => {
         return fetch(`${baseUrl}/${postId}`, {
@@ -90,6 +114,30 @@ export const deletePost = (postId) => {
                 );
             }
         });
+    });
+};
+
+export const addPostComment = (postId, comment) => {
+    return getToken().then((token) => {
+        return fetch(`${baseUrl}/AddComment/${postId}`, {
+            method: "POST",
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(comment),
+        })
+            .then((resp) => {
+                if (resp.ok) {
+                    return resp.json();
+                } else if (resp.status === 401) {
+                    throw new Error("Unauthorized");
+                } else {
+                    throw new Error(
+                        "An unknown error occurred while trying to add comment"
+                    );
+                }
+            });
     });
 };
 
@@ -117,3 +165,24 @@ export const editPostComment = (commentId, comment) => {
     });
 };
 
+export const deletePostComment = (commentId) => {
+    return getToken().then((token) => {
+        return fetch(`${baseUrl}/DeleteComment/${commentId}`, {
+            method: "DELETE",
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        })
+            .then((resp) => {
+                if (resp.ok) {
+                    return;
+                } else if (resp.status === 401) {
+                    throw new Error("Unauthorized");
+                } else {
+                    throw new Error(
+                        "An unknown error occurred while trying to delete comment"
+                    );
+                }
+            });
+    });
+};

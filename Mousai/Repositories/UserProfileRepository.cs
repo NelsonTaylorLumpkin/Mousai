@@ -62,9 +62,10 @@ namespace Mousai.Repositories
                 {
                     cmd.CommandText = @"
                     SELECT u.Id, u.[Name],
+                    u.PenName AS PenName,
                     u.Email, u.CreatedAt AS UserCreatedDate,
                     u.ProfileImage, p.Id AS PostId,
-                    p.Title, p.Body,
+                    p.Title, p.Body, p.PostImage,
                     p.UserId, p.CreatedAt AS PostCreatedDate
                     FROM [User] u
                     LEFT JOIN Post p ON p.UserId = u.Id
@@ -84,7 +85,7 @@ namespace Mousai.Repositories
                                     Id = DbUtils.GetInt(reader, "Id"),
                                     Name = DbUtils.GetString(reader, "Name"),
                                     Email = DbUtils.GetString(reader, "Email"),
-                                    CreatedAt = DbUtils.GetDateTime(reader, "CreatedAt"),
+                                    CreatedAt = DbUtils.GetDateTime(reader, "UserCreatedDate"),
                                     PenName = DbUtils.GetString(reader, "PenName"),
                                     ProfileImage = DbUtils.GetString(reader, "ProfileImage"),
                                     Posts = new List<Post>()
@@ -98,7 +99,7 @@ namespace Mousai.Repositories
                                     Title = DbUtils.GetString(reader, "Title"),
                                     Body = DbUtils.GetString(reader, "Body"),
                                     UserId = DbUtils.GetInt(reader, "UserId"),
-                                    CreatedAt = DbUtils.GetDateTime(reader, "CreatedAt"),
+                                    CreatedAt = DbUtils.GetDateTime(reader, "PostCreatedDate"),
                                     PostImage = DbUtils.GetString(reader, "PostImage")
                                 });
                             }
