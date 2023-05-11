@@ -10,6 +10,7 @@ import Post from "./Post";
 import MyPostsList from "./MyPostsList";
 import EditPostForm from "./EditPostForm";
 import PostDetails from "./PostDetails";
+import UserProfileCard from "./UserProfileCard";
 
 export default function ApplicationViews({ isLoggedIn }) {
     return (
@@ -30,6 +31,7 @@ export default function ApplicationViews({ isLoggedIn }) {
                     <Route path="register" element={<Register />} />
                     <Route path="userprofile" element={<UserProfiles />} />
                     <Route path="userprofile/:id" element={<UserProfileDetails />} />
+                    {/* <Route path="userprofilecard/:id" element={<UserProfileCard />} /> */}
                     <Route path="*" element={<p>Whoops, nothing here...</p>} />
                 </Route>
             </Routes>
