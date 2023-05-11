@@ -10,7 +10,7 @@ namespace Mousai.Controllers
 {
 
     [Route("api/[controller]")]
-    [Authorize]
+    //[Authorize]
     [ApiController]
     public class PostController : ControllerBase
     {
