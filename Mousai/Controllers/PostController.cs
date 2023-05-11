@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using System;
@@ -7,7 +8,7 @@ using Mousai.Repositories;
 
 namespace Mousai.Controllers
 {
-    
+
     [Route("api/[controller]")]
     [Authorize]
     [ApiController]
@@ -47,7 +48,7 @@ namespace Mousai.Controllers
             return CreatedAtAction(nameof(GetPublishedPostById), new { id = post.Id }, post);
         }
 
-       
+
         [HttpGet("MyPosts")]
         public IActionResult GetMyPosts()
         {
@@ -111,7 +112,7 @@ namespace Mousai.Controllers
             return Ok(post);
         }
 
-      
+
         [HttpGet("{id}/details")]
         public IActionResult GetPostDetails(int id)
         {
@@ -152,7 +153,7 @@ namespace Mousai.Controllers
             return NoContent();
         }
 
-      
+
         private UserProfile GetCurrentUserProfile()
         {
             var firebaseUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;

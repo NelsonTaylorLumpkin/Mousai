@@ -7,10 +7,13 @@ import {
     NavbarBrand,
     Nav,
     NavItem,
-    NavLink
+    NavLink,
+    UncontrolledDropdown,
+    DropdownToggle,
+    DropdownMenu,
+    DropdownItem
 } from 'reactstrap';
 import { logout } from '../modules/authManager';
-import { allUsers } from '../modules/userManager';
 
 export default function Header({ isLoggedIn }) {
     const [isOpen, setIsOpen] = useState(false);
@@ -23,14 +26,10 @@ export default function Header({ isLoggedIn }) {
                 <NavbarToggler onClick={toggle} />
                 <Collapse isOpen={isOpen} navbar>
                     <Nav className="mr-auto" navbar>
-                        { /* When isLoggedIn === true, we will render the Home link */}
                         {isLoggedIn &&
-                            <>
-                                <NavItem>
-                                    <NavLink tag={RRNavLink} to="/">Home</NavLink>
-                                </NavItem>
-
-                            </>
+                            <NavItem>
+                                <NavLink tag={RRNavLink} to="/">Home</NavLink>
+                            </NavItem>
                         }
                         {isLoggedIn &&
                             <NavItem>
@@ -42,23 +41,26 @@ export default function Header({ isLoggedIn }) {
                                 <NavLink tag={RRNavLink} to="/add">Add Post</NavLink>
                             </NavItem>
                         }
-                        {isLoggedIn &&
-                            <NavItem>
-                                <NavLink tag={RRNavLink} to="/edit">Edit Post</NavLink>
-                            </NavItem>
-                        }
                     </Nav>
                     <Nav navbar>
                         {isLoggedIn &&
-                            <>
-                                <NavItem>
-                                    <NavLink tag={RRNavLink} to="/userprofile">User Profiles</NavLink>
-                                </NavItem>
-                                <NavItem>
-                                    <a aria-current="page" className="nav-link"
-                                        style={{ cursor: "pointer" }} onClick={logout}>Logout</a>
-                                </NavItem>
-                            </>
+                            <UncontrolledDropdown nav inNavbar>
+                                <DropdownToggle nav caret>
+                                    Actions
+                                </DropdownToggle>
+                                <DropdownMenu end>
+                                    <DropdownItem tag={RRNavLink} to="/edit">
+                                        Edit Post
+                                    </DropdownItem>
+                                    <DropdownItem tag={RRNavLink} to="/mypostlist">
+                                        My Posts
+                                    </DropdownItem>
+                                    <DropdownItem divider />
+                                    <DropdownItem onClick={logout}>
+                                        Logout
+                                    </DropdownItem>
+                                </DropdownMenu>
+                            </UncontrolledDropdown>
                         }
                         {!isLoggedIn &&
                             <>
@@ -85,10 +87,13 @@ export default function Header({ isLoggedIn }) {
 //     NavbarBrand,
 //     Nav,
 //     NavItem,
-//     NavLink
+//     NavLink,
+//     UncontrolledDropdown,
+//     DropdownToggle,
+//     DropdownMenu,
+//     DropdownItem
 // } from 'reactstrap';
 // import { logout } from '../modules/authManager';
-// import { allUsers } from '../modules/userManager';
 
 // export default function Header({ isLoggedIn }) {
 //     const [isOpen, setIsOpen] = useState(false);
@@ -101,14 +106,10 @@ export default function Header({ isLoggedIn }) {
 //                 <NavbarToggler onClick={toggle} />
 //                 <Collapse isOpen={isOpen} navbar>
 //                     <Nav className="mr-auto" navbar>
-//                         { /* When isLoggedIn === true, we will render the Home link */}
 //                         {isLoggedIn &&
-//                             <>
-//                                 <NavItem>
-//                                     <NavLink tag={RRNavLink} to="/">Home</NavLink>
-//                                 </NavItem>
-
-//                             </>
+//                             <NavItem>
+//                                 <NavLink tag={RRNavLink} to="/">Home</NavLink>
+//                             </NavItem>
 //                         }
 //                         {isLoggedIn &&
 //                             <NavItem>
@@ -120,23 +121,26 @@ export default function Header({ isLoggedIn }) {
 //                                 <NavLink tag={RRNavLink} to="/add">Add Post</NavLink>
 //                             </NavItem>
 //                         }
-//                         {isLoggedIn &&
-//                             <NavItem>
-//                                 <NavLink tag={RRNavLink} to="/edit/{id}">Edit Post</NavLink>
-//                             </NavItem>
-//                         }
 //                     </Nav>
 //                     <Nav navbar>
 //                         {isLoggedIn &&
-//                             <>
-//                                 <NavItem>
-//                                     <NavLink tag={RRNavLink} to="/userprofile">User Profiles</NavLink>
-//                                 </NavItem>
-//                                 <NavItem>
-//                                     <a aria-current="page" className="nav-link"
-//                                         style={{ cursor: "pointer" }} onClick={logout}>Logout</a>
-//                                 </NavItem>
-//                             </>
+//                             <UncontrolledDropdown nav inNavbar>
+//                                 <DropdownToggle nav caret>
+//                                     Actions
+//                                 </DropdownToggle>
+//                                 <DropdownMenu right>
+//                                     <DropdownItem tag={RRNavLink} to="/edit">
+//                                         Edit Post
+//                                     </DropdownItem>
+//                                     <DropdownItem tag={RRNavLink} to="/myposts">
+//                                         My Posts
+//                                     </DropdownItem>
+//                                     <DropdownItem divider />
+//                                     <DropdownItem onClick={logout}>
+//                                         Logout
+//                                     </DropdownItem>
+//                                 </DropdownMenu>
+//                             </UncontrolledDropdown>
 //                         }
 //                         {!isLoggedIn &&
 //                             <>

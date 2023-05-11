@@ -4,26 +4,35 @@ import { getToken } from "./authManager";
 const baseUrl = '/api/post';
 const userUrl = '/api/userprofile';
 
-export const getPosts = () => {
-    return getToken().then((token) => {
-        return fetch(`${baseUrl}/GetAll`, {
-            method: "GET",
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        }).then((resp) => {
-            if (resp.ok) {
-                return resp.json();
-            } else {
-                throw new Error(
-                    "An unknown error occurred while trying to get posts"
-                );
-            }
-        });
+export const getPosts = async () => {
+    const token = await getToken();
+    const resp = await fetch(`${baseUrl}/GetAll`, {
+        method: "GET",
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
     });
+    if (resp.ok) {
+        return resp.json();
+    } else {
+        throw new Error("An unknown error occurred while trying to get posts");
+    }
 };
 
-
+export const getPostById = async (id) => {
+    const token = await getToken();
+    const resp = await fetch(`${baseUrl}/${id}`, {
+        method: "GET",
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+    if (resp.ok) {
+        return resp.json();
+    } else {
+        throw new Error(`An unknown error occurred while trying to get post with ID ${id}`);
+    }
+};
 
 
 
@@ -74,7 +83,7 @@ export const addPost = (post) => {
 
 export const editPost = (postId, post) => {
     return getToken().then((token) => {
-        return fetch(`${baseUrl}/${postId}`, {
+        return fetch(`${baseUrl}/Edit/${postId}`, {
             method: "PUT",
             headers: {
                 Authorization: `Bearer ${token}`,
