@@ -10,7 +10,10 @@ const Post = ({ post, addComment }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        addPostComment(comment); // Call the prop function
+        const newComment = {
+            Message: comment
+        }
+        addPostComment(post.id, newComment); // Call the prop function
         setComment("");
     };
 

@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System;
 using Mousai.Models;
 using Mousai.Repositories;
+using System.Xml.Linq;
 
 namespace Mousai.Controllers
 {
@@ -63,17 +64,18 @@ namespace Mousai.Controllers
         }
 
         [HttpPost("AddComment/{id}")]
-        public IActionResult AddComment(Comment comment)
+        public IActionResult AddComment(int id, Comment comment)
         {
             var currentUser = GetCurrentUserProfile();
             if (currentUser == null)
             {
                 return Unauthorized();
             }
-
+            comment.PostId = id;
             comment.UserProfileId = currentUser.Id;
             _commentRepository.Add(comment);
-            return CreatedAtAction(nameof(GetCommentById), new { id = comment.Id }, comment);
+            return Ok(comment);
+            //return CreatedAtAction(nameof(GetCommentById), new { id = comment.Id }, comment);
         }
 
         [HttpGet("GetComments/{postId}")]
