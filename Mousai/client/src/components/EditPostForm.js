@@ -1,35 +1,49 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
-import { editPost, getMyPosts } from '../modules/postManager';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import { editPost, getMyPosts, getPostById } from '../modules/postManager';
 
 const EditPostForm = ({ }) => {
-    const [title, setTitle] = useState('');
-    const [content, setContent] = useState('');
-    const [image, setImage] = useState(null);
+    const [error, setError] = useState(null);
     let { postId } = useParams();
+    const [post, setPost] = useState({
+        title: "",
+        body: "",
+        postImage: "",
+    });
     useEffect(() => {
-        getMyPosts(postId).then(post => {
-            if (post) {
-                setTitle(post.title || '');
-                setContent(post.content || '');
-            }
-        });
-        console.log(postId)
-    }, [postId]);
+        getPostById(postId)
+            .then(data => {
+                delete data.userProfile
+                setPost(data);
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        const formData = new FormData();
-        formData.append('title', title);
-        formData.append('content', content);
-        if (image) {
-            formData.append('image', image);
+            })
+
+    }, []);
+    const navigate = useNavigate();
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        if (!post.title || !post.body || !post.postImage) {
+            setError("Please enter all fields.");
+            return;
         }
-        editPost(postId, formData).then(() => {
-
-            return <Link to={`/post/${postId}`}>View Post</Link>;
-        });
+        editPost(postId, post)
+            .then(() => {
+                navigate("/");
+            })
+            .catch((error) => {
+                setError(
+                    "An unknown error occurred while trying to save the post."
+                );
+            });
     };
+    const handleChange = (event) => {
+        const { name, value } = event.target;
+        setPost((prevState) => ({
+            ...prevState,
+            [name]: value,
+        }));
+    };
+
 
     return (
         <div className="container">
@@ -39,15 +53,25 @@ const EditPostForm = ({ }) => {
                     <form onSubmit={handleSubmit}>
                         <div className="form-group">
                             <label htmlFor="title">Title</label>
-                            <input type="text" className="form-control" id="title" value={title} onChange={(e) => setTitle(e.target.value)} required />
+                            <input type="text" name="title" className="form-control" id="title" value={post.title}
+                                onChange={(e) => handleChange(e)} required />
                         </div>
                         <div className="form-group">
                             <label htmlFor="content">Content</label>
-                            <textarea className="form-control" id="content" rows="5" value={content} onChange={(e) => setContent(e.target.value)} required></textarea>
+                            <textarea className="form-control" name="body" id="content" rows="5" value={post.body}
+                                onChange={(e) => handleChange(e)} required ></textarea>
                         </div>
                         <div className="form-group">
-                            <label htmlFor="image">Image</label>
-                            <input type="file" className="form-control-file" id="image" onChange={(e) => setImage(e.target.files[0])} />
+                            <label htmlFor="postImage">Post Image:</label>
+                            <input
+                                type="url"
+                                id="postImage"
+                                name="postImage"
+                                className="form-control"
+                                value={post.postImage}
+                                onChange={(e) => handleChange(e)} required />
+
+
                         </div>
                         <button type="submit" className="btn btn-primary">Submit Edit</button>
                     </form>

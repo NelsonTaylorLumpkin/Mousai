@@ -105,9 +105,9 @@ export const editPost = (postId, post) => {
     });
 };
 
-export const deletePost = (postId) => {
+export const deletePost = (id) => {
     return getToken().then((token) => {
-        return fetch(`${baseUrl}/${postId}`, {
+        return fetch(`${baseUrl}/${id}`, {
             method: "DELETE",
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -125,6 +125,27 @@ export const deletePost = (postId) => {
         });
     });
 };
+
+// export const deletePost = (postId) => {
+//     return getToken().then((token) => {
+//         return fetch(`${baseUrl}/Delete/${postId}`, {
+//             method: "DELETE",
+//             headers: {
+//                 Authorization: `Bearer ${token}`,
+//             },
+//         }).then((resp) => {
+//             if (resp.ok) {
+//                 return;
+//             } else if (resp.status === 401) {
+//                 throw new Error("Unauthorized");
+//             } else {
+//                 throw new Error(
+//                     "An unknown error occurred while trying to delete the post"
+//                 );
+//             }
+//         });
+//     });
+// };
 
 export const addPostComment = (postId, comment) => {
     return getToken().then((token) => {

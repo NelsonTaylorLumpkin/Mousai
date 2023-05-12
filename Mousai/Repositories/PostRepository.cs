@@ -34,7 +34,7 @@ namespace Mousai.Repositories
                        SELECT p.Id, p.Title, p.Body, 
                                p.PostImage AS PostImage,
                                p.CreatedAt AS PostCreated, 
-                               p.UserId,
+                               p.UserId As UserProfileId,
 
                                u.Id, u.Name AS Name, u.PenName AS PenName, 
                                u.Email AS Email, u.CreatedAt AS CreatedAt, u.ProfileImage AS ProfileImage
@@ -235,10 +235,10 @@ namespace Mousai.Repositories
                 Body = reader.GetString(reader.GetOrdinal("Body")),
                 PostImage = DbUtils.GetNullableString(reader, "PostImage"),
                 CreatedAt = reader.GetDateTime(reader.GetOrdinal("CreatedAt")),
-                UserId = reader.GetInt32(reader.GetOrdinal("Id")),
+                UserId = reader.GetInt32(reader.GetOrdinal("UserProfileId")),
                 UserProfile = new UserProfile()
                 {
-                    Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                    Id = reader.GetInt32(reader.GetOrdinal("UserProfileId")),
                     Name = reader.GetString(reader.GetOrdinal("Name")),
                     PenName = reader.GetString(reader.GetOrdinal("PenName")),
                     Email = reader.GetString(reader.GetOrdinal("Email")),
