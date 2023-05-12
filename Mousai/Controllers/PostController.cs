@@ -62,7 +62,7 @@ namespace Mousai.Controllers
             return Ok(myPosts);
         }
 
-        [HttpPost("AddComment")]
+        [HttpPost("AddComment/{id}")]
         public IActionResult AddComment(Comment comment)
         {
             var currentUser = GetCurrentUserProfile();

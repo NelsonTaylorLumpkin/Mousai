@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import Post from './Post';
-import { getPosts } from "../modules/postManager";
+import { addPostComment, getPosts } from "../modules/postManager";
 import PostForm from './PostForm';
 
 const PostList = () => {
@@ -30,15 +30,31 @@ const PostList = () => {
         return <div>Error: {error.message}</div>;
     }
 
+
+    const addNewComment = (postId, comment) => {
+        addPostComment(postId, comment)
+            .then(() => getPosts())
+            .catch(err => console.log(err));
+
+    }
+
+
     return (
         <div className="container">
             <div className="row justify-content-center">
                 {posts.map((p) => (
-                    <Post post={p} key={p.id} />
+                    <Post
+                        post={p}
+                        key={p.id}
+                        addComment={(comment) => addNewComment(p.id, comment)}
+                    />
                 ))}
             </div>
         </div>
     );
 };
+
+
+
 
 export default PostList;
