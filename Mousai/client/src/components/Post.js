@@ -1,3 +1,4 @@
+import "./Post.css"
 import React, { useState } from "react";
 import { Card, CardBody, Form, FormGroup, Label, Input } from "reactstrap";
 import { Link } from "react-router-dom";
@@ -17,11 +18,6 @@ const Post = ({ post, addComment }) => {
         setComment("");
     };
 
-    // const handleSubmit = (e) => {
-    //     e.preventDefault();
-    //     setComments([...comments, { message: comment }]);
-    //     setComment("");
-    // };
 
     return (
         <Card>
