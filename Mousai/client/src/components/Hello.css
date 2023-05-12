@@ -1,17 +1,11 @@
-/* /* /* .img {
-    background-image: url('https://i.imgur.com/AjGZhJG.png');
-    height: 1000px;
-    width: 1000px;
-    background-size: cover;
-    background-position: center;
-} */
-/* body {
-    margin: 0;
-} */
-/* .img {
-    background-image: url('https://i.imgur.com/AjGZhJG.png');
-    height: 1000px;
-    width: 1000px;
-    background-size: cover;
-    background-position: center;
-} */
+.hello {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+iframe {
+    width: 100vw;
+    height: 100vh;
+}
