@@ -1,4 +1,4 @@
-body {
+/* /* body {
     font-family: 'Roboto', sans-serif;
     line-height: 1.6;
 }
@@ -102,114 +102,11 @@ button[onClick] {
 }
 
 button[onClick]:hover {
-    background-color: #333;
+    background-color: #000000;
+    color: #fff
 }
 
 button[onClick]:active {
-    background-color: #5d5d5d;
+    background-color: #000000;
+    color: #fff
 }
-
-/* body {
-    font-family: 'Roboto', sans-serif;
-    line-height: 1.6;
-}
-
-a {
-    color: #1a1a1a;
-    text-decoration: none;
-}
-
-button {
-    cursor: pointer;
-}
-
-/* Post styles */
-/* .Card {
-    background-color: #f7f7f7;
-    border-radius: 8px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    margin: 20px 0;
-    padding: 20px;
-    transition: transform 0.3s;
-}
-
-.Card:hover {
-    transform: translateY(-5px);
-}
-
-.CardBody {
-    padding: 20px;
-}
-
-.text-left {
-    font-size: 1.1rem;
-    font-weight: 600;
-}
-
-.text-left a {
-    color: #5d5d5d;
-}
-
-.text-left a:hover {
-    color: #000;
-}
-
-strong {
-    color: #333;
-}
-
-.post {
-    position: relative;
-    width: 100%;
-}
-
-.post img {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.Form {
-    margin-top: 20px;
-}
-
-button[type="submit"] {
-    background-color: #1a1a1a;
-    border: none;
-    border-radius: 4px;
-    color: #fff;
-    font-weight: 600;
-    padding: 8px 16px;
-    transition: background-color 0.3s;
-}
-
-button[type="submit"]:hover {
-    background-color: #333;
-}
-
-button[type="submit"]:active {
-    background-color: #1a1a1a;
-
-}
-
-button[onClick] {
-    background-color: #1a1a1a;
-    border: none;
-    border-radius: 4px;
-    color: #fff;
-    font-weight: 600;
-    margin-top: 10px;
-    padding: 8px 16px;
-    transition: background-color 0.3s;
-}
-
-button[onClick]:hover {
-    background-color: #333;
-}
-
-button[onClick]:active {
-    background-color: #5d5d5d;
-} */
