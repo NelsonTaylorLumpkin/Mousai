@@ -31,3 +31,4 @@ const UserProfileDetails = () => {
 };
 
 export default UserProfileDetails;
+
